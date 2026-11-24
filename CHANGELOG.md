@@ -20,6 +20,10 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) once it reache
 - `pnpm verify:corridor` accepts `EXPECT_STATE`, so a fault scenario asserts the
   terminal state the engine should reach (for example `refunded`) instead of
   requiring `completed`.
+- `scripts/fault-scenario.sh [spec] [expected-state]` runs one live corridor under
+  a fault (default `refund` → `refunded`), and `reference-corridor.yml` runs it
+  on its schedule against the reference stack — so the control is exercised by a
+  live scenario, not only documented.
 - `docs/operations.md` documents every fault, how it is applied, and the expected
   engine outcome for each.
 

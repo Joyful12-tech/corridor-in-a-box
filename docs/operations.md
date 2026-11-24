@@ -312,6 +312,22 @@ scripts/reference-anchor.sh faults refund &     # breaks the next payment
 CORRIDOR_SIGNER_SECRET=S… EXPECT_STATE=refunded pnpm verify:corridor
 ```
 
+`scripts/fault-scenario.sh [spec] [expected-state]` is that sequence as one
+command — it arms the fault, runs the corridor with `EXPECT_STATE`, and fails if
+the fault never applied (`refund` is the default, and the only spec that implies
+its state):
+
+```bash
+scripts/fault-scenario.sh              # refund -> refunded
+scripts/fault-scenario.sh reject held  # a state the manifest actually reaches
+```
+
+It is a **live scenario**, not just an example: `.github/workflows/reference-corridor.yml`
+runs `scripts/fault-scenario.sh refund refunded` on its schedule, after the
+run that must reach `completed`, against the same reference stack. A regression
+in the injection therefore fails the nightly job instead of silently going
+undetected.
+
 That run ends `refunded`, not `completed`, because it passed through
 `refund_pending` after the anchor reported its refund — the path §2 describes,
 reproduced instead of waited for. `EXPECT_STATE` exits `0` only when the run

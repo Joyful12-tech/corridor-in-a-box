@@ -495,6 +495,9 @@ payout_watch() {
 #   scripts/reference-anchor.sh faults refund
 #   scripts/reference-anchor.sh faults quote-expiry=1
 #
+# scripts/fault-scenario.sh runs a whole corridor under one of these, and is
+# what .github/workflows/reference-corridor.yml exercises live.
+#
 # Each invocation watches the platform for the NEXT payment (a transaction
 # opened after the fault was armed), applies the fault once, then exits. Pin one
 # exactly with FAULT_TX_ID=<sep31 transaction id>, or pick by its on-chain
@@ -711,12 +714,16 @@ faults() {
       log "reject: $id is now error"
       ;;
     ask-info)
+      # RETURNING, not the command tag: psql_platform runs psql -q, which
+      # suppresses "UPDATE 1", so matching that text could never succeed.
       row="$(psql_platform -t -A -c "UPDATE sep31_transaction
         SET status = 'pending_customer_info_update',
             message = 'corridor fault: updated customer information required',
             updated_at = now()
-        WHERE id = '$id';")" || row=""
-      case "$row" in *UPDATE\ 1*) ;; *) die "could not move $id to pending_customer_info_update" ;; esac
+        WHERE id = '$id'
+        RETURNING id;")" || row=""
+      [ "$row" = "$id" ] \
+        || die "could not move $id to pending_customer_info_update (row returned: \"$row\")"
       log "ask-info: $id is now pending_customer_info_update"
       ;;
     refund)

@@ -26,6 +26,7 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) once it reache
   live scenario, not only documented.
 - `docs/operations.md` documents every fault, how it is applied, and the expected
   engine outcome for each.
+
 ### Added — a server-side proxy from the send app to the service ([#690](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/690))
 
 - `POST /api/send/payments` and `GET /api/send/payments/:key` in `web/` call `@corridor/service` with

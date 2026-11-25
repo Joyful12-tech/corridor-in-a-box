@@ -26,6 +26,17 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) once it reache
   live scenario, not only documented.
 - `docs/operations.md` documents every fault, how it is applied, and the expected
   engine outcome for each.
+### Added — a server-side proxy from the send app to the service ([#690](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/690))
+
+- `POST /api/send/payments` and `GET /api/send/payments/:key` in `web/` call `@corridor/service` with
+  `SEND_APP_SERVICE_API_KEY`, which is read on the server only. The browser holds no key and cannot
+  choose the service URL, the path or any header.
+- The routes take no credentials from the caller, so they are gated. They fail closed with 503 until
+  `SEND_APP_SERVICE_URL` and `SEND_APP_CORRIDORS` are set, refuse a payment for any corridor not listed
+  in `SEND_APP_CORRIDORS` (403), and limit each client to 10 payments and 120 reads per minute (429).
+- Service error bodies are cut down to their code and the offending field before they reach the browser.
+- `tests/web-send-proxy.test.ts` covers the proxy and checks that no client component imports it or
+  names the key variable.
 
 ### Changed — probe findings recorded for MyKobo, BlindPay, Coins.ph and Anclap ([#650](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/650), [#651](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/651), [#653](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/653), [#654](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/654))
 

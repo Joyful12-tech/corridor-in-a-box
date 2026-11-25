@@ -26,6 +26,7 @@ follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html) once it reache
   live scenario, not only documented.
 - `docs/operations.md` documents every fault, how it is applied, and the expected
   engine outcome for each.
+
 ### Changed — probe findings recorded for MyKobo, BlindPay, Coins.ph and Anclap ([#650](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/650), [#651](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/651), [#653](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/653), [#654](https://github.com/corridor-in-a-box/corridor-in-a-box/issues/654))
 
 - `mykobo.co` (#650): the probe is right and the anchor's endpoint is down. The toml loads and

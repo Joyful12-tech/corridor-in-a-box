@@ -386,6 +386,7 @@ Faults are test-profile machinery, not a production control: they write to the
 platform's own database and use its internal business-server API, both of which
 are reachable only from this stack. `down` drops the quote trigger if a
 `quote-expiry` fault never caught a quote.
+
 ### `pnpm load-test` — concurrent payments against the reference anchor
 
 ```bash
